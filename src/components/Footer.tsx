@@ -1,10 +1,17 @@
+import { motion } from "framer-motion";
 import { Linkedin, Twitter, Youtube } from "lucide-react";
 import logo from "@/assets/logo.png";
 
 const Footer = () => {
   return (
     <footer className="bg-navy text-white/70">
-      <div className="container mx-auto px-4 py-14">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        className="container mx-auto px-4 py-14"
+      >
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
           <div>
@@ -15,15 +22,17 @@ const Footer = () => {
               solutions.
             </p>
             <div className="flex gap-3 mt-5">
-              <a href="#" className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors">
-                <Linkedin className="w-3.5 h-3.5" />
-              </a>
-              <a href="#" className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors">
-                <Twitter className="w-3.5 h-3.5" />
-              </a>
-              <a href="#" className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors">
-                <Youtube className="w-3.5 h-3.5" />
-              </a>
+              {[Linkedin, Twitter, Youtube].map((Icon, i) => (
+                <motion.a
+                  key={i}
+                  href="#"
+                  whileHover={{ scale: 1.15, backgroundColor: "hsl(170 60% 40%)" }}
+                  whileTap={{ scale: 0.92 }}
+                  className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center transition-colors"
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                </motion.a>
+              ))}
             </div>
           </div>
 
@@ -33,7 +42,7 @@ const Footer = () => {
             <ul className="space-y-2.5 text-xs">
               {["About Us", "Services", "Products", "Insights", "Careers"].map((l) => (
                 <li key={l}>
-                  <a href="#" className="hover:text-white transition-colors">{l}</a>
+                  <a href="#" className="hover:text-white transition-colors duration-200">{l}</a>
                 </li>
               ))}
             </ul>
@@ -45,7 +54,7 @@ const Footer = () => {
             <ul className="space-y-2.5 text-xs">
               {["AI Transformation", "Data Engineering", "Digital Services", "IoT Solutions", "Analytics"].map((l) => (
                 <li key={l}>
-                  <a href="#" className="hover:text-white transition-colors">{l}</a>
+                  <a href="#" className="hover:text-white transition-colors duration-200">{l}</a>
                 </li>
               ))}
             </ul>
@@ -62,18 +71,16 @@ const Footer = () => {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Bottom bar */}
       <div className="border-t border-white/10">
         <div className="container mx-auto px-4 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-white/40">
-            Copyright © 2026. All Rights Reserved.
-          </p>
+          <p className="text-xs text-white/40">Copyright © 2026. All Rights Reserved.</p>
           <div className="flex gap-6 text-xs text-white/40">
-            <a href="#" className="hover:text-white/70 transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white/70 transition-colors">Terms of Service</a>
-            <a href="#" className="hover:text-white/70 transition-colors">Cookie Policy</a>
+            {["Privacy Policy", "Terms of Service", "Cookie Policy"].map((l) => (
+              <a key={l} href="#" className="hover:text-white/70 transition-colors duration-200">{l}</a>
+            ))}
           </div>
         </div>
       </div>

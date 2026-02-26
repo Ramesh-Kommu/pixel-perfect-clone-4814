@@ -11,6 +11,21 @@ const serviceCards = [
   { icon: Shield, title: "Splunk IT Infra & Security", desc: "Monitor, analyze, secure your IT" },
 ];
 
+const stagger = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08, delayChildren: 1.1 } },
+};
+
+const cardVariant = {
+  hidden: { opacity: 0, y: 50, scale: 0.92 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const },
+  },
+};
+
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
@@ -20,28 +35,33 @@ const HeroSection = () => {
           src={heroBg}
           alt=""
           className="w-full h-full object-cover"
-          initial={{ scale: 1.08 }}
+          initial={{ scale: 1.12 }}
           animate={{ scale: 1 }}
-          transition={{ duration: 2.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+          transition={{ duration: 3, ease: [0.16, 1, 0.3, 1] }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-navy/30 via-transparent to-navy/80" />
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-b from-navy/40 via-transparent to-navy/90"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.5 }}
+        />
       </div>
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 text-center pt-28 pb-16">
         <motion.p
-          initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+          initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
+          transition={{ delay: 0.4, duration: 1, ease: [0.22, 1, 0.36, 1] }}
           className="text-white/70 text-sm md:text-base mb-4 tracking-widest uppercase"
         >
           Empower Your Business Decisions with
         </motion.p>
 
         <motion.h1
-          initial={{ opacity: 0, y: 40, filter: "blur(12px)" }}
+          initial={{ opacity: 0, y: 50, filter: "blur(16px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ delay: 0.5, duration: 1, ease: "easeOut" }}
+          transition={{ delay: 0.6, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
           className="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 leading-tight"
         >
           <span className="text-white">AI-Powered </span>
@@ -49,43 +69,51 @@ const HeroSection = () => {
         </motion.h1>
 
         <motion.p
-          initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+          initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ delay: 0.7, duration: 0.8, ease: "easeOut" }}
+          transition={{ delay: 0.8, duration: 1, ease: [0.22, 1, 0.36, 1] }}
           className="text-white/50 text-sm md:text-base max-w-lg mx-auto mb-10 leading-relaxed"
         >
           Leverage cutting-edge analytics and AI-powered solutions to unlock the full potential of your data
         </motion.p>
 
         <motion.a
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.9, duration: 0.6, ease: "easeOut" }}
-          whileHover={{ scale: 1.05, boxShadow: "0 0 30px hsl(260 70% 55% / 0.4)" }}
-          whileTap={{ scale: 0.97 }}
+          initial={{ opacity: 0, y: 20, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ delay: 1, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          whileHover={{ scale: 1.06, boxShadow: "0 0 40px hsl(260 70% 55% / 0.5)" }}
+          whileTap={{ scale: 0.96 }}
           href="#services"
-          className="inline-block px-10 py-3.5 rounded-full btn-gradient text-white font-semibold text-sm tracking-wide transition-all"
+          className="inline-block px-10 py-3.5 rounded-full btn-gradient text-white font-semibold text-sm tracking-wide transition-shadow"
         >
           Explore More →
         </motion.a>
       </div>
 
       {/* Service Cards */}
-      <div className="relative z-10 container mx-auto px-4 pb-16">
+      <motion.div
+        className="relative z-10 container mx-auto px-4 pb-16"
+        variants={stagger}
+        initial="hidden"
+        animate="visible"
+      >
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {serviceCards.map((card, i) => (
+          {serviceCards.map((card) => (
             <motion.div
               key={card.title}
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.1 + i * 0.1, duration: 0.6, ease: "easeOut" }}
-              whileHover={{ y: -6, backgroundColor: "rgba(255,255,255,0.15)" }}
-              className="bg-white/[0.07] backdrop-blur-xl border border-white/[0.08] rounded-2xl p-5 text-center transition-all duration-300 cursor-pointer group"
+              variants={cardVariant}
+              whileHover={{
+                y: -8,
+                backgroundColor: "rgba(255,255,255,0.14)",
+                boxShadow: "0 20px 40px rgba(0,0,0,0.3)",
+                transition: { duration: 0.3, ease: "easeOut" },
+              }}
+              className="bg-white/[0.07] backdrop-blur-xl border border-white/[0.08] rounded-2xl p-5 text-center cursor-pointer group"
             >
               <motion.div
                 className="w-11 h-11 mx-auto mb-3 rounded-xl bg-accent/20 flex items-center justify-center"
-                whileHover={{ rotate: 6, scale: 1.1 }}
-                transition={{ type: "spring", stiffness: 300 }}
+                whileHover={{ rotate: 8, scale: 1.15 }}
+                transition={{ type: "spring", stiffness: 400, damping: 15 }}
               >
                 <card.icon className="w-5 h-5 text-accent" />
               </motion.div>
@@ -98,7 +126,7 @@ const HeroSection = () => {
             </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };
