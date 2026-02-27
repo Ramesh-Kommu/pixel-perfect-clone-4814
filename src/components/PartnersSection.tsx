@@ -38,11 +38,11 @@ const PartnersSection = () => {
               src={partner.logo}
               alt={partner.name}
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 0.7, y: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.15 + i * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ opacity: 1, scale: 1.08, filter: "grayscale(0)" }}
-              className="h-8 md:h-10 object-contain grayscale transition-all cursor-pointer"
+              whileHover={{ scale: 1.1, transition: { duration: 0.3 } }}
+              className="h-8 md:h-10 object-contain cursor-pointer transition-all"
             />
           ))}
         </motion.div>

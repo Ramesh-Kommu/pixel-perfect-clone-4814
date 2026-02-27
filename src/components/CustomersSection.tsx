@@ -1,17 +1,39 @@
 import { motion } from "framer-motion";
+import adaniLogo from "@/assets/customers/adani.png";
+import amaraLogo from "@/assets/customers/amara.png";
+import bajajLogo from "@/assets/customers/bajaj.png";
+import coromandelLogo from "@/assets/customers/coromandel.png";
+import genpactLogo from "@/assets/customers/genpact.png";
+import indiaGlyLogo from "@/assets/customers/india-gly.png";
+import jacobsLogo from "@/assets/customers/jacobs.png";
+import mahindraLogo from "@/assets/customers/mahindra.png";
+import oandmLogo from "@/assets/customers/oandm.png";
+import reychamLogo from "@/assets/customers/reycham.png";
+import stonleyLogo from "@/assets/customers/stonley.png";
+import tvsLogo from "@/assets/customers/tvs.png";
+import uniliverLogo from "@/assets/customers/uniliver.png";
+import worleyLogo from "@/assets/customers/worley.png";
 
 const customerLogos = [
-  { name: "Genpact" }, { name: "BOSCH" }, { name: "FERTIS" }, { name: "Adani" },
-  { name: "Worley" }, { name: "Dole" }, { name: "TVS" }, { name: "Coromandel" },
-  { name: "JACOBS" }, { name: "RVS Tyres" }, { name: "Wockhardt" }, { name: "SUDHAKAR" },
-  { name: "KENSING" }, { name: "Cohance" }, { name: "Natural" }, { name: "Continental" },
-  { name: "Eagle Diesel" }, { name: "Venture Global" }, { name: "LIFEPharma" }, { name: "Aramco" },
-  { name: "Meil" }, { name: "SCHOTT" }, { name: "DIMSC" }, { name: "DRILLMEC" },
+  { name: "Genpact", logo: genpactLogo },
+  { name: "Adani", logo: adaniLogo },
+  { name: "Worley", logo: worleyLogo },
+  { name: "TVS", logo: tvsLogo },
+  { name: "Coromandel", logo: coromandelLogo },
+  { name: "Jacobs", logo: jacobsLogo },
+  { name: "Amara Raja", logo: amaraLogo },
+  { name: "Bajaj", logo: bajajLogo },
+  { name: "Unilever", logo: uniliverLogo },
+  { name: "Mahindra", logo: mahindraLogo },
+  { name: "India Glycols", logo: indiaGlyLogo },
+  { name: "O&M", logo: oandmLogo },
+  { name: "Stonley", logo: stonleyLogo },
+  { name: "Reycham", logo: reychamLogo },
 ];
 
 const container = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.03, delayChildren: 0.2 } },
+  visible: { transition: { staggerChildren: 0.04, delayChildren: 0.2 } },
 };
 
 const item = {
@@ -49,23 +71,25 @@ const CustomersSection = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-60px" }}
-          className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4"
+          className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-6"
         >
           {customerLogos.map((logo, i) => (
             <motion.div
               key={i}
               variants={item}
               whileHover={{
-                scale: 1.06,
+                scale: 1.08,
                 borderColor: "hsl(170 60% 40% / 0.4)",
                 boxShadow: "0 4px 20px hsl(170 60% 40% / 0.1)",
                 transition: { duration: 0.25 },
               }}
-              className="flex items-center justify-center h-16 px-3 rounded-lg border border-border transition-all cursor-default"
+              className="flex items-center justify-center h-20 px-4 rounded-lg border border-border bg-card transition-all cursor-default"
             >
-              <span className="text-xs md:text-sm font-bold text-muted-foreground text-center leading-tight">
-                {logo.name}
-              </span>
+              <img
+                src={logo.logo}
+                alt={logo.name}
+                className="max-h-12 max-w-full object-contain"
+              />
             </motion.div>
           ))}
         </motion.div>

@@ -3,12 +3,12 @@ import heroBg from "@/assets/hero-bg.png";
 import { BarChart3, Database, Bot, LineChart, Settings, Shield } from "lucide-react";
 
 const serviceCards = [
-  { icon: BarChart3, title: "Predictive Analytics", desc: "Use data to predict and plan for the future" },
-  { icon: Database, title: "SAP Business Data Cloud", desc: "Unlock the full potential of SAP data" },
-  { icon: Bot, title: "Agentic AI", desc: "AI agents that autonomously deliver results" },
-  { icon: LineChart, title: "Microsoft Fabric Analytics", desc: "Unified analytics on Microsoft platform" },
-  { icon: Settings, title: "OT Manuf. Excellence", desc: "Drive efficiency in manufacturing ops" },
-  { icon: Shield, title: "Splunk IT Infra & Security", desc: "Monitor, analyze, secure your IT" },
+  { icon: BarChart3, title: "Predictive Analytics", desc: "Use data to predict and plan for the future", animated: true },
+  { icon: Database, title: "SAP Business Data Cloud", desc: "Unlock the full potential of SAP data", animated: true },
+  { icon: Bot, title: "Agentic AI", desc: "AI agents that autonomously deliver results", animated: true },
+  { icon: LineChart, title: "Microsoft Fabric Analytics", desc: "Unified analytics on Microsoft platform", animated: false },
+  { icon: Settings, title: "OT Manuf. Excellence", desc: "Drive efficiency in manufacturing ops", animated: false },
+  { icon: Shield, title: "Splunk IT Infra & Security", desc: "Monitor, analyze, secure your IT", animated: false },
 ];
 
 const stagger = {
@@ -23,6 +23,25 @@ const cardVariant = {
     y: 0,
     scale: 1,
     transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const },
+  },
+};
+
+const pulseGlow = {
+  animate: {
+    boxShadow: [
+      "0 0 0px hsl(260 70% 55% / 0)",
+      "0 0 20px hsl(260 70% 55% / 0.25)",
+      "0 0 0px hsl(260 70% 55% / 0)",
+    ],
+    transition: { duration: 3, repeat: Infinity, ease: "easeInOut" as const },
+  },
+};
+
+const iconFloat = {
+  animate: {
+    y: [0, -4, 0],
+    rotate: [0, 3, -3, 0],
+    transition: { duration: 4, repeat: Infinity, ease: "easeInOut" as const },
   },
 };
 
@@ -102,24 +121,35 @@ const HeroSection = () => {
             <motion.div
               key={card.title}
               variants={cardVariant}
+              {...(card.animated ? pulseGlow : {})}
               whileHover={{
                 y: -8,
                 backgroundColor: "rgba(255,255,255,0.14)",
                 boxShadow: "0 20px 40px rgba(0,0,0,0.3)",
                 transition: { duration: 0.3, ease: "easeOut" },
               }}
-              className="bg-white/[0.07] backdrop-blur-xl border border-white/[0.08] rounded-2xl p-5 text-center cursor-pointer group"
+              className="bg-white/[0.07] backdrop-blur-xl border border-white/[0.08] rounded-2xl p-5 text-center cursor-pointer group relative overflow-hidden"
             >
+              {/* Animated shimmer for special cards */}
+              {card.animated && (
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.04] to-transparent"
+                  animate={{ x: ["-100%", "200%"] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "linear", delay: Math.random() * 2 }}
+                />
+              )}
+
               <motion.div
-                className="w-11 h-11 mx-auto mb-3 rounded-xl bg-accent/20 flex items-center justify-center"
+                className="relative w-11 h-11 mx-auto mb-3 rounded-xl bg-accent/20 flex items-center justify-center"
+                {...(card.animated ? iconFloat : {})}
                 whileHover={{ rotate: 8, scale: 1.15 }}
                 transition={{ type: "spring", stiffness: 400, damping: 15 }}
               >
                 <card.icon className="w-5 h-5 text-accent" />
               </motion.div>
-              <h3 className="text-white text-xs font-semibold mb-1 leading-tight">{card.title}</h3>
-              <p className="text-white/40 text-[10px] leading-tight">{card.desc}</p>
-              <div className="flex items-center justify-center gap-1.5 mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <h3 className="relative text-white text-xs font-semibold mb-1 leading-tight">{card.title}</h3>
+              <p className="relative text-white/40 text-[10px] leading-tight">{card.desc}</p>
+              <div className="relative flex items-center justify-center gap-1.5 mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="w-1.5 h-1.5 rounded-full bg-primary" />
                 <div className="w-1.5 h-1.5 rounded-full bg-white/20" />
               </div>
