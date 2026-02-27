@@ -1,14 +1,15 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 import heroBg from "@/assets/hero-bg.png";
 import { BarChart3, Database, Bot, LineChart, Settings, Shield } from "lucide-react";
 
 const serviceCards = [
-  { icon: BarChart3, title: "Predictive Analytics", desc: "Use data to predict and plan for the future", animated: true },
-  { icon: Database, title: "SAP Business Data Cloud", desc: "Unlock the full potential of SAP data", animated: true },
-  { icon: Bot, title: "Agentic AI", desc: "AI agents that autonomously deliver results", animated: true },
-  { icon: LineChart, title: "Microsoft Fabric Analytics", desc: "Unified analytics on Microsoft platform", animated: false },
-  { icon: Settings, title: "OT Manuf. Excellence", desc: "Drive efficiency in manufacturing ops", animated: false },
-  { icon: Shield, title: "Splunk IT Infra & Security", desc: "Monitor, analyze, secure your IT", animated: false },
+  { icon: BarChart3, title: "Predictive Analytics", desc: "Use data to predict and plan for the future", detail: "Harness ML models to forecast demand, reduce risk, and optimize operations in real-time." },
+  { icon: Database, title: "SAP Business Data Cloud", desc: "Unlock the full potential of SAP data", detail: "Seamlessly integrate SAP ecosystems with cloud-native analytics for unified business insights." },
+  { icon: Bot, title: "Agentic AI", desc: "AI agents that autonomously deliver results", detail: "Deploy intelligent agents that learn, adapt, and execute complex workflows without human intervention." },
+  { icon: LineChart, title: "Microsoft Fabric Analytics", desc: "Unified analytics on Microsoft platform", detail: "End-to-end analytics from data lake to Power BI, all within the Microsoft ecosystem." },
+  { icon: Settings, title: "OT Manuf. Excellence", desc: "Drive efficiency in manufacturing ops", detail: "Bridge IT and OT with smart sensors, real-time monitoring, and predictive maintenance." },
+  { icon: Shield, title: "Splunk IT Infra & Security", desc: "Monitor, analyze, secure your IT", detail: "Detect threats instantly, automate incident response, and ensure 360° infrastructure visibility." },
 ];
 
 const stagger = {
@@ -30,19 +31,81 @@ const pulseGlow = {
   animate: {
     boxShadow: [
       "0 0 0px hsl(260 70% 55% / 0)",
-      "0 0 20px hsl(260 70% 55% / 0.25)",
+      "0 0 18px hsl(260 70% 55% / 0.2)",
       "0 0 0px hsl(260 70% 55% / 0)",
     ],
-    transition: { duration: 3, repeat: Infinity, ease: "easeInOut" as const },
+    transition: { duration: 3.5, repeat: Infinity, ease: "easeInOut" as const },
   },
 };
 
 const iconFloat = {
   animate: {
-    y: [0, -4, 0],
-    rotate: [0, 3, -3, 0],
+    y: [0, -3, 0],
     transition: { duration: 4, repeat: Infinity, ease: "easeInOut" as const },
   },
+};
+
+const ServiceCard = ({ card, index }: { card: typeof serviceCards[0]; index: number }) => {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <motion.div
+      variants={cardVariant}
+      {...pulseGlow}
+      onHoverStart={() => setHovered(true)}
+      onHoverEnd={() => setHovered(false)}
+      className="bg-white/[0.07] backdrop-blur-xl border border-white/[0.08] rounded-2xl p-5 text-center cursor-pointer group relative overflow-hidden"
+    >
+      {/* Shimmer */}
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent"
+        animate={{ x: ["-100%", "200%"] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "linear" as const, delay: index * 0.8 }}
+      />
+
+      <motion.div
+        className="relative w-11 h-11 mx-auto mb-3 rounded-xl bg-accent/20 flex items-center justify-center"
+        {...iconFloat}
+      >
+        <card.icon className="w-5 h-5 text-accent" />
+      </motion.div>
+
+      <h3 className="relative text-white text-xs font-semibold mb-1 leading-tight">{card.title}</h3>
+      <p className="relative text-white/40 text-[10px] leading-tight">{card.desc}</p>
+
+      {/* Hover reveal content */}
+      <AnimatePresence>
+        {hovered && (
+          <motion.div
+            initial={{ opacity: 0, height: 0, filter: "blur(8px)" }}
+            animate={{ opacity: 1, height: "auto", filter: "blur(0px)" }}
+            exit={{ opacity: 0, height: 0, filter: "blur(8px)" }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="relative overflow-hidden"
+          >
+            <div className="mt-3 pt-3 border-t border-white/[0.08]">
+              <motion.p
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -5, opacity: 0 }}
+                transition={{ delay: 0.1, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                className="text-white/60 text-[10px] leading-relaxed"
+              >
+                {card.detail}
+              </motion.p>
+              <motion.div
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                exit={{ scaleX: 0 }}
+                transition={{ delay: 0.2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="mt-2 h-[2px] bg-gradient-to-r from-accent/60 via-primary/40 to-transparent origin-left rounded-full"
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
 };
 
 const HeroSection = () => {
@@ -117,43 +180,8 @@ const HeroSection = () => {
         animate="visible"
       >
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {serviceCards.map((card) => (
-            <motion.div
-              key={card.title}
-              variants={cardVariant}
-              {...(card.animated ? pulseGlow : {})}
-              whileHover={{
-                y: -8,
-                backgroundColor: "rgba(255,255,255,0.14)",
-                boxShadow: "0 20px 40px rgba(0,0,0,0.3)",
-                transition: { duration: 0.3, ease: "easeOut" },
-              }}
-              className="bg-white/[0.07] backdrop-blur-xl border border-white/[0.08] rounded-2xl p-5 text-center cursor-pointer group relative overflow-hidden"
-            >
-              {/* Animated shimmer for special cards */}
-              {card.animated && (
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.04] to-transparent"
-                  animate={{ x: ["-100%", "200%"] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: "linear", delay: Math.random() * 2 }}
-                />
-              )}
-
-              <motion.div
-                className="relative w-11 h-11 mx-auto mb-3 rounded-xl bg-accent/20 flex items-center justify-center"
-                {...(card.animated ? iconFloat : {})}
-                whileHover={{ rotate: 8, scale: 1.15 }}
-                transition={{ type: "spring", stiffness: 400, damping: 15 }}
-              >
-                <card.icon className="w-5 h-5 text-accent" />
-              </motion.div>
-              <h3 className="relative text-white text-xs font-semibold mb-1 leading-tight">{card.title}</h3>
-              <p className="relative text-white/40 text-[10px] leading-tight">{card.desc}</p>
-              <div className="relative flex items-center justify-center gap-1.5 mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                <div className="w-1.5 h-1.5 rounded-full bg-white/20" />
-              </div>
-            </motion.div>
+          {serviceCards.map((card, i) => (
+            <ServiceCard key={card.title} card={card} index={i} />
           ))}
         </div>
       </motion.div>
